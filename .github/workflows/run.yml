@@ -1,9 +1,9 @@
-name: Magic Ball AI Daily Automation
+name: Magic Ball AI 5-Times Daily Automation
 
 on:
   schedule:
-    - cron: '0 4 * * *' # প্রতিদিন বাংলাদেশ সময় সকাল ১০টায় রান করবে
-  workflow_dispatch: # হাত দিয়ে ম্যানুয়ালি রান করার জন্য
+    - cron: '0 0,4,8,12,16,20 * * *'
+  workflow_dispatch:
 
 jobs:
   run-ai-factory:
@@ -24,3 +24,11 @@ jobs:
       - name: Run Magic Ball Engine
         run: |
           python main.py
+
+      - name: Commit and Push Lightweight Storage JSON
+        run: |
+          git config --global user.name "AI Automation Bot"
+          git config --global user.email "bot@ai.local"
+          git add lightweight_storage.json
+          git commit -m "Auto-update lightweight_storage.json for 4 channels [skip ci]" || echo "No changes to commit"
+          git push
